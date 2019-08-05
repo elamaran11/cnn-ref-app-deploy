@@ -57,6 +57,9 @@ pipeline {
           sh "cat catalog-service.yml"
 
           container('kubectl') {
+            sh "kubectl create -f mongodb-prod-configmaps.yml"
+            sh "kubectl create -f mongodb-prod-secrets.yml"
+            sh "kubectl create -f mongodb-prod-deploy.yml" 
             sh "kubectl apply -f front-end.yml"
             sh "kubectl apply -f catalog-service.yml"
             sh "kubectl apply -f customer-service.yml"
