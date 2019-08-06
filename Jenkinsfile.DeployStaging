@@ -57,6 +57,8 @@ pipeline {
           sh "cat catalog-service.yml"
 
           container('kubectl') {
+            sh "kubectl -n staging delete configmap mongodb"
+            sh "kubectl -n staging delete secrets mongodb"
             sh "kubectl create -f mongodb-stag-configmaps.yml"
             sh "kubectl create -f mongodb-stag-secrets.yml"
             sh "kubectl create -f mongodb-stag-deploy.yml" 
