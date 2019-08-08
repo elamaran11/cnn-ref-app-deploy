@@ -83,7 +83,7 @@ pipeline {
         }
       }
     }
-
+/*
     stage('Push Dynatrace Deployment Event') {
       steps {
         script {
@@ -158,7 +158,7 @@ pipeline {
           specFile: "monspec/e2e_perfsig.json"
         )
       }
-    }
+    }*/
   }
 }
 
