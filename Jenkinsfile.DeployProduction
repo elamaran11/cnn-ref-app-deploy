@@ -20,7 +20,7 @@ pipeline {
     string(name: 'orderserviceversion',    defaultValue: '1', description: 'image tag when custom version option choosen')
     string(name: 'customerserviceversion', defaultValue: '1', description: 'image tag when custom version option choosen')
     string(name: 'catalogserviceversion',  defaultValue: '1', description: 'image tag when custom version option choosen')
-    string(name: 'registry',               defaultValue: 'robjahn', description: 'Dockerhub account with Docker Images')        
+    string(name: 'registry',               defaultValue: '', description: 'Dockerhub account with Docker Images')        
   }
   stages {
     stage('Deploy') {
@@ -57,9 +57,9 @@ pipeline {
           sh "cat catalog-service.yml"
 
           container('kubectl') {
-            sh "kubectl create -f mongodb-prod-configmaps.yml"
-            sh "kubectl create -f mongodb-prod-secrets.yml"
-            sh "kubectl create -f mongodb-prod-deploy.yml" 
+            sh "kubectl apply -f mongodb-prod-configmaps.yml"
+            sh "kubectl apply -f mongodb-prod-secrets.yml"
+            sh "kubectl apply -f mongodb-prod-deploy.yml" 
             sh "kubectl apply -f front-end.yml"
             sh "kubectl apply -f catalog-service.yml"
             sh "kubectl apply -f customer-service.yml"
