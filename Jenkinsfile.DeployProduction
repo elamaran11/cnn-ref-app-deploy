@@ -60,7 +60,6 @@ pipeline {
             sh "kubectl apply -f mongodb-prod-configmaps.yml"
             sh "kubectl apply -f mongodb-prod-secrets.yml"
             sh "kubectl apply -f mongodb-prod-deploy.yml"
-            sh "kubectl delete -f front-end.yml" 
             sh "kubectl apply -f front-end.yml"
             sh "kubectl apply -f catalog-service.yml"
             sh "kubectl apply -f customer-service.yml"
