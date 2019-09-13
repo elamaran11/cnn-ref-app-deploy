@@ -1,16 +1,3 @@
-@Library('dynatrace@master') _
-
-def tagMatchRules = [
-  [
-    meTypes: [
-      [meType: 'SERVICE']
-    ],
-    tags : [
-      [ context: 'CONTEXTLESS', key: 'dt-kube-demo-environment', value: 'production' ]
-    ]
-  ]
-]
-
 pipeline {
   agent {
     label 'maven'
@@ -83,26 +70,6 @@ pipeline {
         }
       }
     }
-    /*
-    stage('Push Dynatrace Deployment Event') {
-      steps {
-        script {
-          echo "Waiting for the service to be tagged..."
-          sleep 20
-
-          // push event using Jenkins plugin
-          env.dtDeploymentProject = "dt-kube-demo"
-          // https://github.com/jenkinsci/performance-signature-dynatrace-plugin/blob/master/dynatrace/README.md
-          createDynatraceDeploymentEvent(
-            envId: 'Dynatrace Tenant', 
-            tagMatchRules: tagMatchRules,
-            customProperties: [[key: 'frontendversion', value: "${params.frontendversion}"],[key: 'orderversion', value: "${params.orderserviceversion}"],[key: 'customerversion', value: "${params.customerserviceversion}"],[key: 'catalogversion', value: "${params.catalogserviceversion}"]]
-           ) {
-              // do nothing. Need to do this after the wait as to have service up 
-            }
-        }
-      }
-    }*/
   }
 }
 

@@ -1,16 +1,3 @@
-@Library('dynatrace@master') _
-
-def tagMatchRules = [
-  [
-    meTypes: [
-      [meType: 'SERVICE']
-    ],
-    tags : [
-      [ context: 'CONTEXTLESS', key: 'dt-kube-demo-environment', value: 'staging' ]
-    ]
-  ]
-]
-
 pipeline {
   agent {
     label 'maven'
