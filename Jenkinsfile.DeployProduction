@@ -1,16 +1,3 @@
-@Library('dynatrace@master') _
-
-def tagMatchRules = [
-  [
-    meTypes: [
-      [meType: 'SERVICE']
-    ],
-    tags : [
-      [ context: 'CONTEXTLESS', key: 'dt-kube-demo-environment', value: 'production' ]
-    ]
-  ]
-]
-
 pipeline {
   agent {
     label 'maven'
@@ -20,7 +7,7 @@ pipeline {
     string(name: 'orderserviceversion',    defaultValue: '1', description: 'image tag when custom version option choosen')
     string(name: 'customerserviceversion', defaultValue: '1', description: 'image tag when custom version option choosen')
     string(name: 'catalogserviceversion',  defaultValue: '1', description: 'image tag when custom version option choosen')
-    string(name: 'registry',               defaultValue: 'robjahn', description: 'Dockerhub account with Docker Images')        
+    string(name: 'registry',               defaultValue: '', description: 'Dockerhub account with Docker Images')        
   }
   stages {
     stage('Deploy') {
@@ -57,6 +44,9 @@ pipeline {
           sh "cat catalog-service.yml"
 
           container('kubectl') {
+            sh "kubectl apply -f mongodb-prod-configmaps.yml"
+            sh "kubectl apply -f mongodb-prod-secrets.yml"
+            sh "kubectl apply -f mongodb-prod-deploy.yml"
             sh "kubectl apply -f front-end.yml"
             sh "kubectl apply -f catalog-service.yml"
             sh "kubectl apply -f customer-service.yml"
@@ -77,26 +67,6 @@ pipeline {
           sleep 20
           echo "Execute a couple of CURL commands to verify UI is up..."
           executeCurl(2, "http://front-end.production")
-        }
-      }
-    }
-
-    stage('Push Dynatrace Deployment Event') {
-      steps {
-        script {
-          echo "Waiting for the service to be tagged..."
-          sleep 20
-
-          // push event using Jenkins plugin
-          env.dtDeploymentProject = "dt-kube-demo"
-          // https://github.com/jenkinsci/performance-signature-dynatrace-plugin/blob/master/dynatrace/README.md
-          createDynatraceDeploymentEvent(
-            envId: 'Dynatrace Tenant', 
-            tagMatchRules: tagMatchRules,
-            customProperties: [[key: 'frontendversion', value: "${params.frontendversion}"],[key: 'orderversion', value: "${params.orderserviceversion}"],[key: 'customerversion', value: "${params.customerserviceversion}"],[key: 'catalogversion', value: "${params.catalogserviceversion}"]]
-           ) {
-              // do nothing. Need to do this after the wait as to have service up 
-            }
         }
       }
     }
