@@ -1,0 +1,10 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apmserver
+  namespace: staging
+data:
+  service-name: customer-service
+  application-pack: com.ewolff.microservice.customer.web
+  server-urls: http://elastic-apm-elk-dv.apps.dev.ose.keybank.com:80

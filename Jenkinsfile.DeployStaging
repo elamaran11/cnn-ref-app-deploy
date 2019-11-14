@@ -46,7 +46,8 @@ pipeline {
           container('kubectl') {
             sh "kubectl apply -f mongodb-stag-configmaps.yml"
             sh "kubectl apply -f mongodb-stag-secrets.yml"
-            sh "kubectl apply -f mongodb-stag-deploy.yml" 
+            sh "kubectl apply -f mongodb-stag-deploy.yml"
+            sh "kubectl apply -f apmserver-stag-configmaps.yml"
             sh "kubectl apply -f front-end.yml"
             sh "kubectl apply -f catalog-service.yml"
             sh "kubectl apply -f customer-service.yml"

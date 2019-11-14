@@ -41,6 +41,21 @@ spec:
             secretKeyRef:
               name: mongodb
               key: database-password
+        - name: ELASTIC_APM_SERVICE_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: apmserver
+              key: service-name
+        - name: ELASTIC_APM_APPLICATION_PACKAGES
+          valueFrom:
+            secretKeyRef:
+              name: apmserver
+              key: application-pack
+        - name: ELASTIC_APM_SERVER_URLS
+          valueFrom:
+            secretKeyRef:
+              name: apmserver
+              key: server-urls
 status: {}
 
 ---
