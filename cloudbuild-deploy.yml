@@ -1,11 +1,3 @@
-options:
-  env:
-  # TODO: Pass these in as configuration arguments. Region and Cluster name are
-  # subject to change and should not be hardcoded!
-  # See <https://github.com/GoogleCloudPlatform/cloud-builders/tree/master/kubectl>
-  # for more information
-  - CLOUDSDK_COMPUTE_REGION=us-central1
-  - CLOUDSDK_CONTAINER_CLUSTER=cicd-test-dt-kube-demo-cluster
 substitutions:
   _FRONTEND_IMAGE_NAME: front-end
   _FRONTEND_IMAGE_TAG: '1'
@@ -25,6 +17,13 @@ substitutions:
   _ENV: staging
   _MONGODB_FILE_PREFIX: mongodb-stag
 
+  # TODO: Pass these in as configuration arguments. Region and Cluster name are
+  # subject to change and should not be hardcoded!
+  # See <https://github.com/GoogleCloudPlatform/cloud-builders/tree/master/kubectl>
+  # for more information
+  _CLUSTER_LOCATION=us-central1
+  _CLUSTER_NAME=cicd-test-dt-kube-demo-cluster
+
 steps:
 
 - id: 'Deploy Mongodb'
@@ -37,6 +36,9 @@ steps:
   - $_MONGODB_FILE_PREFIX-secrets.yml
   - -f
   - $_MONGODB_FILE_PREFIX-deploy.yml
+  env:
+  - 'CLOUDSDK_COMPUTE_REGION=$_CLUSTER_LOCATION'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=$_CLUSTER_NAME'
 
 - id: 'Template Kube Config'
   name: gcr.io/cloud-builders/kubectl
@@ -63,8 +65,8 @@ steps:
   name: gcr.io/cloud-builders/gke-deploy
   args:
   - run
-  - --cluster=$${CLOUDSDK_CONTAINER_CLUSTER}
-  - --location=$${CLOUDSDK_COMPUTE_REGION}
+  - --cluster=$_CLUSTER_NAME
+  - --location=$_CLUSTER_LOCATION
   - --filename=front-end.yml
   - --image=gcr.io/$PROJECT_ID/$_FRONTEND_IMAGE_NAME:$_FRONTEND_IMAGE_TAG
   - --namespace=$_ENV
@@ -73,8 +75,8 @@ steps:
   name: gcr.io/cloud-builders/gke-deploy
   args:
   - run
-  - --cluster=$$CLOUDSDK_CONTAINER_CLUSTER
-  - --location=$$CLOUDSDK_COMPUTE_REGION
+  - --cluster=$_CLUSTER_NAME
+  - --location=$_CLUSTER_LOCATION
   - --filename=order-service.yml
   - --image=gcr.io/$PROJECT_ID/$_ORDER_SERVICE_IMAGE_NAME:$_ORDER_SERVICE_IMAGE_TAG
   - --namespace=$_ENV
@@ -83,8 +85,8 @@ steps:
   name: gcr.io/cloud-builders/gke-deploy
   args:
   - run
-  - --cluster=$$CLOUDSDK_CONTAINER_CLUSTER
-  - --location=$$CLOUDSDK_COMPUTE_REGION
+  - --cluster=$_CLUSTER_NAME
+  - --location=$_CLUSTER_LOCATION
   - --filename=customer-service.yml
   - --image=gcr.io/$PROJECT_ID/$_CUSTOMER_SERVICE_IMAGE_NAME:$_CUSTOMER_SERVICE_IMAGE_TAG
   - --namespace=$_ENV
@@ -93,8 +95,8 @@ steps:
   name: gcr.io/cloud-builders/gke-deploy
   args:
   - run
-  - --cluster=$$CLOUDSDK_CONTAINER_CLUSTER
-  - --location=$$CLOUDSDK_COMPUTE_REGION
+  - --cluster=$_CLUSTER_NAME
+  - --location=$_CLUSTER_LOCATION
   - --filename=catalog-service.yml
   - --image=gcr.io/$PROJECT_ID/$_CATALOG_SERVICE_IMAGE_NAME:$_CATALOG_SERVICE_IMAGE_TAG
   - --namespace=$_ENV
