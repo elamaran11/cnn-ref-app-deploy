@@ -38,6 +38,26 @@ steps:
   - -f
   - $_MONGODB_FILE_PREFIX-deploy.yml
 
+- id: 'Template Kube Config'
+  name: gcr.io/cloud-builders/kubectl
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+      sed -i 's/REPLACE_NAMESPACE/${_ENV}/g' front-end.yml
+      sed -i 's/REPLACE_NAMESPACE/${_ENV}/g' order-end.yml
+      sed -i 's/REPLACE_NAMESPACE/${_ENV}/g' customer-service.yml
+      sed -i 's/REPLACE_NAMESPACE/${_ENV}/g' catalog-service.yml
+
+      sed -i 's#REPLACE-IMAGE-NAME#gcr.io/$PROJECT_ID/${_FRONTEND_IMAGE_NAME}:${_FRONTEND_IMAGE_TAG}#g' front-end.yml
+      sed -i 's#REPLACE-IMAGE-NAME#gcr.io/$PROJECT_ID/${_ORDER_IMAGE_NAME}:${_ORDER_IMAGE_TAG}#g' order-service.yml
+      sed -i 's#REPLACE-IMAGE-NAME#gcr.io/$PROJECT_ID/${_CUSTOMER_IMAGE_NAME}:${_CUSTOMER_IMAGE_TAG}#g' customer-service.yml
+      sed -i 's#REPLACE-IMAGE-NAME#gcr.io/$PROJECT_ID/${_CATALOG_IMAGE_NAME}:${_CATALOG_IMAGE_TAG}#g' catalog-service.yml
+   
+      cat front-end.yml
+      cat order-service.yml
+      cat customer-service.yml
+      cat catalog-service.yml
 
 - id: 'Deploy Frontend'
   name: gcr.io/cloud-builders/gke-deploy
