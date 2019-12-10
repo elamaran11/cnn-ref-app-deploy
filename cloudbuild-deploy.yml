@@ -70,6 +70,8 @@ steps:
   - --filename=front-end.yml
   - --image=gcr.io/$PROJECT_ID/$_FRONTEND_IMAGE_NAME:$_FRONTEND_IMAGE_TAG
   - --namespace=$_ENV
+  # Without this option, deployment will fail because the output directory already exists...
+  - -o frontend-output
 
 - id: 'Deploy Order Service'
   name: gcr.io/cloud-builders/gke-deploy
@@ -80,6 +82,8 @@ steps:
   - --filename=order-service.yml
   - --image=gcr.io/$PROJECT_ID/$_ORDER_SERVICE_IMAGE_NAME:$_ORDER_SERVICE_IMAGE_TAG
   - --namespace=$_ENV
+  # Without this option, deployment will fail because the output directory already exists...
+  - -o order-output
 
 - id: 'Deploy Customer Service'
   name: gcr.io/cloud-builders/gke-deploy
@@ -90,6 +94,8 @@ steps:
   - --filename=customer-service.yml
   - --image=gcr.io/$PROJECT_ID/$_CUSTOMER_SERVICE_IMAGE_NAME:$_CUSTOMER_SERVICE_IMAGE_TAG
   - --namespace=$_ENV
+  # Without this option, deployment will fail because the output directory already exists...
+  - -o customer-output
 
 - id: 'Deploy Catalog Service'
   name: gcr.io/cloud-builders/gke-deploy
@@ -100,6 +106,8 @@ steps:
   - --filename=catalog-service.yml
   - --image=gcr.io/$PROJECT_ID/$_CATALOG_SERVICE_IMAGE_NAME:$_CATALOG_SERVICE_IMAGE_TAG
   - --namespace=$_ENV
+  # Without this option, deployment will fail because the output directory already exists...
+  - -o catalog-output
 
 
 # TODO: Enable the following steps
