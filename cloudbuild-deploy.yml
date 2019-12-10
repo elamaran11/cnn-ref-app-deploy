@@ -47,7 +47,7 @@ steps:
   - '-c'
   - |
       sed -i 's/REPLACE_NAMESPACE/${_ENV}/g' front-end.yml
-      sed -i 's/REPLACE_NAMESPACE/${_ENV}/g' order-end.yml
+      sed -i 's/REPLACE_NAMESPACE/${_ENV}/g' order-service.yml
       sed -i 's/REPLACE_NAMESPACE/${_ENV}/g' customer-service.yml
       sed -i 's/REPLACE_NAMESPACE/${_ENV}/g' catalog-service.yml
 
