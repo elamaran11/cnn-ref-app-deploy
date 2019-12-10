@@ -63,8 +63,8 @@ steps:
   name: gcr.io/cloud-builders/gke-deploy
   args:
   - run
-  - --cluster=$$CLOUDSDK_CONTAINER_CLUSTER
-  - --location=$$CLOUDSDK_COMPUTE_REGION
+  - --cluster=${CLOUDSDK_CONTAINER_CLUSTER}
+  - --location=${CLOUDSDK_COMPUTE_REGION}
   - --filename=front-end.yml
   - --image=gcr.io/$PROJECT_ID/$_FRONTEND_IMAGE_NAME:$_FRONTEND_IMAGE_TAG
   - --namespace=$_ENV
