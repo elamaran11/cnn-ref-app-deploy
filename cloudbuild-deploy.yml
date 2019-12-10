@@ -52,9 +52,9 @@ steps:
       sed -i 's/REPLACE_NAMESPACE/${_ENV}/g' catalog-service.yml
 
       sed -i 's#REPLACE-IMAGE-NAME#gcr.io/$PROJECT_ID/${_FRONTEND_IMAGE_NAME}:${_FRONTEND_IMAGE_TAG}#g' front-end.yml
-      sed -i 's#REPLACE-IMAGE-NAME#gcr.io/$PROJECT_ID/${_ORDER_IMAGE_NAME}:${_ORDER_IMAGE_TAG}#g' order-service.yml
-      sed -i 's#REPLACE-IMAGE-NAME#gcr.io/$PROJECT_ID/${_CUSTOMER_IMAGE_NAME}:${_CUSTOMER_IMAGE_TAG}#g' customer-service.yml
-      sed -i 's#REPLACE-IMAGE-NAME#gcr.io/$PROJECT_ID/${_CATALOG_IMAGE_NAME}:${_CATALOG_IMAGE_TAG}#g' catalog-service.yml
+      sed -i 's#REPLACE-IMAGE-NAME#gcr.io/$PROJECT_ID/${_ORDER_SERVICE_IMAGE_NAME}:${_ORDER_SERVICE_IMAGE_TAG}#g' order-service.yml
+      sed -i 's#REPLACE-IMAGE-NAME#gcr.io/$PROJECT_ID/${_CUSTOMER_SERVICE_IMAGE_NAME}:${_CUSTOMER_SERVICE_IMAGE_TAG}#g' customer-service.yml
+      sed -i 's#REPLACE-IMAGE-NAME#gcr.io/$PROJECT_ID/${_CATALOG_SERVICE_IMAGE_NAME}:${_CATALOG_SERVICE_IMAGE_TAG}#g' catalog-service.yml
    
       cat front-end.yml
       cat order-service.yml
