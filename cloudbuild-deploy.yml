@@ -8,16 +8,16 @@ options:
   - CLOUDSDK_CONTAINER_CLUSTER=cicd-test-dt-kube-demo-cluster
 substitutions:
   _FRONTEND_IMAGE_NAME: front-end
-  _FRONTEND_IMAGE_TAG: 1
+  _FRONTEND_IMAGE_TAG: '1'
 
   _ORDER_IMAGE_NAME: order-service
-  _ORDER_IMAGE_TAG: 1
+  _ORDER_IMAGE_TAG: '1'
 
   _CATALOG_IMAGE_NAME: catalog-service
-  _CATALOG_IMAGE_TAG: 1
+  _CATALOG_IMAGE_TAG: '1'
 
   _CUSTOMER_IMAGE_NAME: customer-service
-  _CUSTOMER_IMAGE_TAG: 1
+  _CUSTOMER_IMAGE_TAG: '1'
 
   # CHANGE THESE FOR PRODUCTION
   # _ENV: production
