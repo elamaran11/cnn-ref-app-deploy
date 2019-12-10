@@ -108,18 +108,3 @@ steps:
   - --namespace=$_ENV
   # Without this option, deployment will fail because the output directory already exists...
   - -o catalog-output
-
-
-# TODO: Enable the following steps
-#- id: 'Show Pods'
-#  name: gcr.io/cloud-builders/kubectl
-#  args:
-#  - get
-#  - pods
-#  - -n
-#  - $_ENV
-#
-#- id: 'Health Check'
-#- id: 'Push Dynatrace Deployment Event'
-#- id: 'Run e2e load test'
-#- id: 'quality gate'
