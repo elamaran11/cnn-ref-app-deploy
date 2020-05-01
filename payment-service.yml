@@ -1,0 +1,54 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: payment
+  name: payment
+  namespace: REPLACE_NAMESPACE
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: payment
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: payment
+    spec:
+      containers:
+      - image: REPLACE-IMAGE-NAME
+        name: payment
+        ports:
+        - containerPort: 80
+        resources: {}
+        imagePullPolicy: Always
+        env:
+        - name: PAYMENT_SERVICE_URL
+          valueFrom:
+            secretKeyRef:
+              name: apmserver
+              key: payment-url
+status: {}
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    run: payment
+  name: payment
+  namespace: REPLACE_NAMESPACE
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: payment
+  type: LoadBalancer
+status:
+  loadBalancer: {}

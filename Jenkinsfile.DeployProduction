@@ -7,6 +7,7 @@ pipeline {
     string(name: 'orderserviceversion',    defaultValue: '1', description: 'image tag when custom version option choosen')
     string(name: 'customerserviceversion', defaultValue: '1', description: 'image tag when custom version option choosen')
     string(name: 'catalogserviceversion',  defaultValue: '1', description: 'image tag when custom version option choosen')
+    string(name: 'paymentserviceversion',  defaultValue: '1', description: 'image tag when custom version option choosen')
     string(name: 'registry',               defaultValue: '', description: 'Dockerhub account with Docker Images')        
   }
   stages {
@@ -16,6 +17,7 @@ pipeline {
         orderserviceimage = "${params.registry}/order-service:${params.orderserviceversion}"
         customerserviceimage = "${params.registry}/customer-service:${params.customerserviceversion}"
         catalogserviceimage = "${params.registry}/catalog-service:${params.catalogserviceversion}"
+        paymentserviceimage = "${params.registry}/payment-service:${params.paymentserviceversion}"
       }
       steps {
         script {
@@ -26,22 +28,26 @@ pipeline {
           echo "orderserviceimage      : ${env.orderserviceimage}"
           echo "customerserviceimage   : ${env.customerserviceimage}"
           echo "catalogserviceimage    : ${env.catalogserviceimage}"
+          echo "paymentserviceimage    : ${env.paymentserviceimage}"
           echo "============================================="
 
           sh "sed -i 's/REPLACE_NAMESPACE/production/g' front-end.yml"
           sh "sed -i 's/REPLACE_NAMESPACE/production/g' order-service.yml"
           sh "sed -i 's/REPLACE_NAMESPACE/production/g' customer-service.yml"
           sh "sed -i 's/REPLACE_NAMESPACE/production/g' catalog-service.yml"
+          sh "sed -i 's/REPLACE_NAMESPACE/production/g' payment-service.yml"
 
           sh "sed -i 's#REPLACE-IMAGE-NAME#${env.frontendimage}#g' front-end.yml"
           sh "sed -i 's#REPLACE-IMAGE-NAME#${env.orderserviceimage}#g' order-service.yml"
           sh "sed -i 's#REPLACE-IMAGE-NAME#${env.customerserviceimage}#g' customer-service.yml"
           sh "sed -i 's#REPLACE-IMAGE-NAME#${env.catalogserviceimage}#g' catalog-service.yml"
+          sh "sed -i 's#REPLACE-IMAGE-NAME#${env.paymentserviceimage}#g' payment-service.yml"
 
           sh "cat front-end.yml"
           sh "cat order-service.yml"
           sh "cat customer-service.yml"
           sh "cat catalog-service.yml"
+          sh "cat payment-service.yml"
 
           container('kubectl') {
             sh "kubectl apply -f mongodb-prod-configmaps.yml"
@@ -52,6 +58,7 @@ pipeline {
             sh "kubectl apply -f catalog-service.yml"
             sh "kubectl apply -f customer-service.yml"
             sh "kubectl apply -f order-service.yml"
+            sh "kubectl apply -f payment-service.yml"
           }
         }
       }

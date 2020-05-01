@@ -4,7 +4,7 @@ pipeline {
   }  
   parameters {
     choice(name: 'namespace', choices: ['staging', 'production'], description: 'where to deploy')
-    choice(name: 'service', choices: ['front-end', 'order-service', 'customer-service', 'catalog-service'], description: 'what service to deploy')
+    choice(name: 'service', choices: ['front-end', 'order-service', 'customer-service', 'catalog-service', 'payment-service'], description: 'what service to deploy')
     string(name: 'version', defaultValue: '1', description: 'what version to deploy')
     string(name: 'registry', defaultValue: '', description: 'Dockerhub account with Docker Images')
   }
