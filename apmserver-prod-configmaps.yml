@@ -7,5 +7,5 @@ metadata:
 data:
   service-name: customer-service
   application-pack: com.ewolff.microservice.customer.web
-  server-urls: http://elastic-apm-elk-dv.apps.dev.ose.keybank.com:80
+  server-urls: http://elastic-apm-elk-dv.com:80
   payment-url: http://production.payment.app.local/payment
